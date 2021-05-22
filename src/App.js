@@ -25,11 +25,17 @@ function App() {
   const sphereMesh = React.useRef();
   const [activeBox, setActiveBox] = useState(false);
   const [activeTorus, setActiveTorus] = useState(false);
+  const [hover, setHover] = useState(false);
   const texture = useMemo(() => new THREE.TextureLoader().load(randomLetter), []);
 
   const Box = (props) => {
     return (
-      <mesh {...props} ref={boxMesh} scale={activeBox ? [2, 2, 2] : [1, 1, 1]} onClick={() => setActiveBox(!activeBox)}>
+      <mesh
+      {...props}
+      ref={boxMesh}
+      scale={activeBox ? [2, 2, 2] : [1, 1, 1]}
+      onClick={() => setActiveBox(!activeBox)}
+    >
         <boxBufferGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
           <primitive attach="map" object={texture} />
@@ -40,9 +46,16 @@ function App() {
 
   const Torus = (props) => {
     return (
-      <mesh {...props} ref={sphereMesh} scale={activeTorus ? [1.5, 1.5, 1.5] : [1, 1, 1]} onClick={() => setActiveTorus(!activeTorus)}>
+      <mesh
+        {...props}
+        ref={sphereMesh}
+        scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+        onClick={() => setActiveTorus(!activeTorus)}
+        onPointerOver={e => setHover(true)}
+        onPointerOut={e => setHover(false)}
+      >
         <torusBufferGeometry args={[1, 0.3, 8, 8]} />
-        <meshStandardMaterial color={"#a0ff00"} side={THREE.DoubleSide}>
+        <meshStandardMaterial color={activeTorus ? "#a0ff00" : "#aa99ff"} side={THREE.DoubleSide}>
           <primitive attach="map" object={texture} />
         </meshStandardMaterial>
       </mesh>
