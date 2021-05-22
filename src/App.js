@@ -1,5 +1,6 @@
 import React from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 import './App.css';
 
 const AnimateFrame = (props) => {
@@ -11,16 +12,24 @@ const AnimateFrame = (props) => {
 };
 
 function App() {
-  const myMesh = React.useRef();
+  const boxMesh = React.useRef();
+  const sphereMesh = React.useRef();
 
   return (
     <div id="canvas-container">
       <Canvas>
-        <mesh ref={myMesh}>
-          <boxGeometry />
-          <meshNormalMaterial color={"#ff00ff"} />
+        <ambientLight intensity={0.5}  />
+        <pointLight position={[10, 10, 10]} />
+        <mesh ref={boxMesh} position={[2, 0, 0]}>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color={"#ff00ff"} />
         </mesh>
-        <AnimateFrame meshRef={myMesh} />
+        <mesh ref={sphereMesh} position={[-2, 0, 0]}>
+          <ringGeometry args={[0.5, 1, 8]} />
+          <meshStandardMaterial color={"#a0ff00"} side={THREE.DoubleSide} />
+        </mesh>
+        <AnimateFrame meshRef={boxMesh} />
+        <AnimateFrame meshRef={sphereMesh} />
       </Canvas>
     </div>
   );
