@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import './App.css';
 
+const AnimateFrame = (props) => {
+  useFrame(({ clock }) => {
+    props.meshRef.current.rotation.x += 0.01;
+    props.meshRef.current.rotation.y += 0.01;
+  });
+  return null;
+};
+
 function App() {
+  const myMesh = React.useRef();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="canvas-container">
+      <Canvas>
+        <mesh ref={myMesh}>
+          <boxGeometry />
+          <meshNormalMaterial color={"#ff00ff"} />
+        </mesh>
+        <AnimateFrame meshRef={myMesh} />
+      </Canvas>
     </div>
   );
 }
