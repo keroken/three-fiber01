@@ -29,9 +29,9 @@ function App() {
 
   const Box = (props) => {
     return (
-      <mesh ref={boxMesh} position={[2, 0, 0]} scale={activeBox ? [2, 2, 2] : [1, 1, 1]} onClick={() => setActiveBox(!activeBox)}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={"#ff00ff"}>
+      <mesh {...props} ref={boxMesh} scale={activeBox ? [2, 2, 2] : [1, 1, 1]} onClick={() => setActiveBox(!activeBox)}>
+        <boxBufferGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
           <primitive attach="map" object={texture} />
         </meshStandardMaterial>
       </mesh>
@@ -40,8 +40,8 @@ function App() {
 
   const Torus = (props) => {
     return (
-      <mesh ref={sphereMesh} position={[-2, 0, 0]} scale={activeTorus ? [1.5, 1.5, 1.5] : [1, 1, 1]} onClick={() => setActiveTorus(!activeTorus)}>
-        <torusGeometry args={[1, 0.3, 8, 8]} />
+      <mesh {...props} ref={sphereMesh} scale={activeTorus ? [1.5, 1.5, 1.5] : [1, 1, 1]} onClick={() => setActiveTorus(!activeTorus)}>
+        <torusBufferGeometry args={[1, 0.3, 8, 8]} />
         <meshStandardMaterial color={"#a0ff00"} side={THREE.DoubleSide}>
           <primitive attach="map" object={texture} />
         </meshStandardMaterial>
@@ -54,8 +54,8 @@ function App() {
       <Canvas camera={{ position: [0, 0, 7] }}>
         <ambientLight intensity={0.5}  />
         <pointLight position={[10, 10, 10]} />
-        <Box />
-        <Torus />
+        <Box position={[2, 0, 0]} />
+        <Torus position={[-2, 0, 0]}  />
         <BoxMotion meshRef={boxMesh} />
         <TorusMotion meshRef={sphereMesh} />
       </Canvas>
