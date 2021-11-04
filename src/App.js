@@ -12,6 +12,14 @@ const BoxMotion = (props) => {
   return null;
 };
 
+const SphereMotion = (props) => {
+  useFrame(({ clock }) => {
+    props.meshRef.current.rotation.x += 0.05;
+    props.meshRef.current.rotation.y += 0.01;
+  });
+  return null;
+};
+
 const TorusMotion = (props) => {
   useFrame(({ clock }) => {
     props.meshRef.current.rotation.x += 0.01;
@@ -23,7 +31,9 @@ const TorusMotion = (props) => {
 function App() {
   const boxMesh = React.useRef();
   const sphereMesh = React.useRef();
+  const torusMesh = React.useRef();
   const [activeBox, setActiveBox] = useState(false);
+  const [activeSphere, setActiveSphere] = useState(false);
   const [activeTorus, setActiveTorus] = useState(false);
   const [hover, setHover] = useState(false);
   const texture = useMemo(() => new THREE.TextureLoader().load(randomLetter), []);
@@ -36,7 +46,23 @@ function App() {
       scale={activeBox ? [2, 2, 2] : [1, 1, 1]}
       onClick={() => setActiveBox(!activeBox)}
     >
-        <boxBufferGeometry args={[1, 1, 1]} />
+      <boxBufferGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
+        <primitive attach="map" object={texture} />
+      </meshStandardMaterial>
+    </mesh>
+    );
+  };
+
+  const Sphere = (props) => {
+    return (
+      <mesh
+      {...props}
+        ref={sphereMesh}
+        scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+        onClick={() => setActiveSphere(!activeSphere)}
+      >
+        <sphereBufferGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
           <primitive attach="map" object={texture} />
         </meshStandardMaterial>
@@ -48,7 +74,7 @@ function App() {
     return (
       <mesh
         {...props}
-        ref={sphereMesh}
+        ref={torusMesh}
         scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]}
         onClick={() => setActiveTorus(!activeTorus)}
         onPointerOver={e => setHover(true)}
@@ -68,9 +94,11 @@ function App() {
         <ambientLight intensity={0.5}  />
         <pointLight position={[10, 10, 10]} />
         <Box position={[2, 0, 0]} />
+        <Sphere position={[1, 0, 1]} />
         <Torus position={[-2, 0, 0]}  />
         <BoxMotion meshRef={boxMesh} />
-        <TorusMotion meshRef={sphereMesh} />
+        <SphereMotion meshRef={sphereMesh} />
+        <TorusMotion meshRef={torusMesh} />
       </Canvas>
     </div>
   );
