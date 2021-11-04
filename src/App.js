@@ -14,7 +14,7 @@ const BoxMotion = (props) => {
 
 const SphereMotion = (props) => {
   useFrame(({ clock }) => {
-    props.meshRef.current.rotation.x += 0.05;
+    props.meshRef.current.rotation.x += 0;
     props.meshRef.current.rotation.y += 0.01;
   });
   return null;
@@ -59,12 +59,12 @@ function App() {
       <mesh
       {...props}
         ref={sphereMesh}
-        scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+        scale={activeSphere ? [1.5, 1.5, 1.5] : [1, 1, 1]}
         onClick={() => setActiveSphere(!activeSphere)}
       >
-        <sphereBufferGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
-          <primitive attach="map" object={texture} />
+        <sphereBufferGeometry args={[2, 32, 16]} />
+        <meshStandardMaterial wireframe color={activeSphere ? "#ff6633" : "#0f3dc7"}>
+          {/* <primitive attach="map" object={texture} /> */}
         </meshStandardMaterial>
       </mesh>
     );
@@ -94,7 +94,7 @@ function App() {
         <ambientLight intensity={0.5}  />
         <pointLight position={[10, 10, 10]} />
         <Box position={[2, 0, 0]} />
-        <Sphere position={[1, 0, 1]} />
+        <Sphere position={[0, 0, -3]} />
         <Torus position={[-2, 0, 0]}  />
         <BoxMotion meshRef={boxMesh} />
         <SphereMotion meshRef={sphereMesh} />
