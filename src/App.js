@@ -30,6 +30,7 @@ const TorusMotion = (props) => {
 
 function App() {
   const boxMesh = React.useRef();
+  const boxMesh2 = React.useRef();
   const sphereMesh = React.useRef();
   const torusMesh = React.useRef();
   const [activeBox, setActiveBox] = useState(false);
@@ -43,6 +44,22 @@ function App() {
       <mesh
       {...props}
       ref={boxMesh}
+      scale={activeBox ? [2, 2, 2] : [1, 1, 1]}
+      onClick={() => setActiveBox(!activeBox)}
+    >
+      <boxBufferGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={activeBox ? "#ff00ff" : "#820fff"}>
+        <primitive attach="map" object={texture} />
+      </meshStandardMaterial>
+    </mesh>
+    );
+  };
+
+  const Box2 = (props) => {
+    return (
+      <mesh
+      {...props}
+      ref={boxMesh2}
       scale={activeBox ? [2, 2, 2] : [1, 1, 1]}
       onClick={() => setActiveBox(!activeBox)}
     >
@@ -94,9 +111,11 @@ function App() {
         <ambientLight intensity={0.5}  />
         <pointLight position={[10, 10, 10]} />
         <Box position={[2, 0, 0]} />
+        <Box2 position={[4, 0, 2]} />
         <Sphere position={[0, 0, -3]} />
         <Torus position={[-2, 0, 0]}  />
         <BoxMotion meshRef={boxMesh} />
+        <BoxMotion meshRef={boxMesh2} />
         <SphereMotion meshRef={sphereMesh} />
         <TorusMotion meshRef={torusMesh} />
       </Canvas>
